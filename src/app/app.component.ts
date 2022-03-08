@@ -37,13 +37,18 @@ export class AppComponent implements OnInit {
   }
 
   suggestPassword() {
-    this.suggestPs.nativeElement.value = this.userData.login.password;
-    console.log(this.suggestPs.nativeElement.value.length)
-    if(this.suggestPs.nativeElement.value.length <= 5) {
-      this.infoBox.nativeElement.style.display='block';
-      this.infoBox.nativeElement.innerHTML='Suggested Password is Weak!';
-      this.infoBox.nativeElement.style.color='red';
-    }
+    this.usersService.getUserData().subscribe((response) => {
+      this.userData = response;
+      this.suggestPs.nativeElement.value = this.userData.login.password;
+      console.log(this.suggestPs.nativeElement.value.length)
+      if(this.suggestPs.nativeElement.value.length <= 5) {
+        this.infoBox.nativeElement.style.display='block';
+        this.infoBox.nativeElement.innerHTML='Suggested Password is Weak!';
+        this.infoBox.nativeElement.style.color='red';
+      }else if(this.suggestPs.nativeElement.value.length > 5) {
+        this.infoBox.nativeElement.style.display='none';
+      }
+    });
   }
 
   onSubmit() {
